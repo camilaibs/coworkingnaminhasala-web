@@ -49,8 +49,20 @@ angular.module('app.services', [])
         return $http.get(api + '/treinamentos/' + id);
     };
 
+    var altera = function(id, titulo, inicio, fim, onde, emails) {
+        var treinamento = {
+            titulo: titulo,
+            inicio: inicio,
+            fim: fim,
+            onde: onde,
+            emails: emails
+        };
+        return $http.put(api + '/treinamentos/' + id, treinamento);
+    };
+
     return {
         lista: lista,
-        buscaPorId: buscaPorId
+        buscaPorId: buscaPorId,
+        altera: altera
     };
 }]);

@@ -5,9 +5,19 @@
     <!-- /.col-lg-12 -->
 </div>
 <!-- /.row -->
+<div class="row" ng-if="mensagem">
+    <div class="col-lg-12">
+        <div class="alert alert-dismissable" ng-class="{'alert-success': mensagem.tipo == 'sucesso', 'alert-danger': mensagem.tipo == 'erro'}">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            {{ mensagem.texto }}
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
 <div class="row">
     <div class="col-lg-6">
-        <form role="form">
+        <form role="form" ng-submit="altera(treinamento)">
             <div class="form-group">
                 <label>Título</label>
                 <input type="text" class="form-control" ng-model="treinamento.titulo">
@@ -40,7 +50,6 @@
                 <textarea class="form-control" rows="7" ng-model="treinamento.emails"></textarea>
             </div>
         </form>
-        <button type="submit" class="btn btn-danger">Adicionar</button>
     </div>
     <!-- /.col-lg-12 -->
 </div>

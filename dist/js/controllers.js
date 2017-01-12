@@ -16,7 +16,10 @@ function ($scope, $state, UsuariosService, SessaoService) {
                 $state.go('treinamentos');
             },
             function(resposta) {
-                alert(resposta.data);
+                $scope.mensagem = {
+                    tipo: 'erro',
+                    texto: resposta.data
+                };
             }
         );
     
@@ -30,7 +33,10 @@ function ($scope, TreinamentosService) {
             $scope.treinamentos = resposta.data;
         },
         function(resposta) {
-            alert(resposta.data);
+            $scope.mensagem = {
+                tipo: 'erro',
+                texto: resposta.data
+            };
         }
     );
 }])
@@ -52,7 +58,27 @@ function ($scope, $stateParams, TreinamentosService) {
             $scope.treinamento = treinamento;
         },
         function(resposta) {
-            alert(resposta.data);
+            $scope.mensagem = {
+                tipo: 'erro',
+                texto: resposta.data
+            };
         }
     );
+
+    $scope.altera = function(treinamento) {
+         TreinamentosService.altera(treinamento.id, treinamento.titulo, treinamento.inicio, treinamento.fim, treinamento.onde, treinamento.emails).then(
+            function() {
+                $scope.mensagem = {
+                    tipo: 'sucesso',
+                    texto: 'Treinamento alterado com sucesso!'
+                };
+            },
+            function(resposta) {
+                $scope.mensagem = {
+                    tipo: 'erro',
+                    texto: resposta.data
+                };
+            }
+        );
+    };
 }]);
