@@ -28,17 +28,14 @@ angular.module('app.services', [])
 }])
 
 .service('UsuariosService', ['$http', function($http){
-    var usuarios = [
-        {
-            email: 'camila@coworkingnaminhasala.com',
-            senha: '123123'
-        }
-    ];
+    var api = 'http://localhost:8080';
 
     var buscaPorEmailESenha = function(email, senha) {
-        return usuarios.find(function(usuario) {
-            return usuario.email === email && usuario.senha == senha;
-        });
+        var usuario = {
+            email: email,
+            senha: senha
+        };
+        return $http.post(api + '/', usuario);
     };
 
     return {
@@ -47,33 +44,14 @@ angular.module('app.services', [])
 }])
 
 .service('TreinamentosService', ['$http', function($http){
-    var treinamentos = [
-        {
-            id: 1,
-            titulo: 'Backizinho fala comigo, por favor, por favor...',
-            inicio: new Date(2017, 0, 8, 19, 0, 0, 0),
-            fim: new Date(2017, 0, 8, 21, 0, 0, 0),
-            onde: 'https://www.youtube.com/watch?v=8IaxMX9wkD0',
-            emails: ['camila@coworkingnaminhasala.com', 'pessoinha@email.com', 'outro@email.com']
-        },
-        {
-            id: 2,
-            titulo: 'Vamos Back, abre o jogo, fala logo quem você é!',
-            inicio: new Date(2017, 0, 11, 19, 0, 0, 0),
-            fim: new Date(2017, 0, 11, 21, 0, 0, 0),
-            onde: 'https://www.youtube.com/watch?v=bNfHHgVSKNM',
-            emails: ['amila@coworkingnaminhasala.com', 'pessoinha@email.com', 'outro@email.com']
-        }
-    ];
+    var api = 'http://localhost:8080';
 
     var lista = function() {
-        return treinamentos;
+        return $http.get(api + '/treinamentos');
     };
 
     var buscaPorId = function(id) {
-        return treinamentos.find(function(treinamento) {
-            return treinamento.id == id;
-        });
+        return $http.get(api + '/treinamentos/' + id);
     };
 
     return {

@@ -8,23 +8,51 @@ angular.module('app.controllers', [])
 .controller('loginCtrl', ['$scope', '$state', 'UsuariosService', 'SessaoService',
 function ($scope, $state, UsuariosService, SessaoService) {
     $scope.loga = function(email, senha) {
-        var usuario = UsuariosService.buscaPorEmailESenha(email, senha);
-        if (usuario) {
-            SessaoService.loga(usuario);
-            $scope.$emit('login', usuario);
-            $state.go('treinamentos');
-        } else {
-            alert('Email e/ou senha incorretos.');
-        }
+        UsuariosService.buscaPorEmailESenha(email, senha).then(
+            function(resposta) {
+                var usuario = resposta.data;
+                SessaoService.loga(usuario);
+                $scope.$emit('login', usuario);
+                $state.go('treinamentos');
+            },
+            function(resposta) {
+                alert(resposta.data);
+            }
+        );
+    
     };
 }])
 
 .controller('treinamentosCtrl', ['$scope', 'TreinamentosService',
 function ($scope, TreinamentosService) {
-    $scope.treinamentos = TreinamentosService.lista();
+    TreinamentosService.lista().then(
+        function(resposta) {
+            $scope.treinamentos = resposta.data;
+        },
+        function(resposta) {
+            alert(resposta.data);
+        }
+    );
 }])
 
 .controller('treinamentoCtrl', ['$scope', '$stateParams', 'TreinamentosService',
 function ($scope, $stateParams, TreinamentosService) {
-    $scope.treinamento = TreinamentosService.buscaPorId($stateParams.id);
+    TreinamentosService.buscaPorId($stateParams.id).then(
+        function(resposta) {
+            var treinamento = resposta.data;
+            
+            var inicio = new Date();
+            inicio.setTime(treinamento.inicio);
+            treinamento.inicio = inicio;
+
+            var fim = new Date();
+            fim.setTime(treinamento.fim);
+            treinamento.fim = fim;
+
+            $scope.treinamento = treinamento;
+        },
+        function(resposta) {
+            alert(resposta.data);
+        }
+    );
 }]);
